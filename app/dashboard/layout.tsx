@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import React from 'react'
 import Link from 'next/link'
 import { 
@@ -33,7 +35,7 @@ export default async function DashboardLayout({
       <aside className="w-64 bg-[#1e3a5f] text-white flex flex-col fixed h-full shadow-xl z-20">
         <div className="p-6 border-b border-white/10">
           <h2 className="text-xl font-black tracking-tight flex items-center">
-            PaySlip PH
+            EzSlip
           </h2>
           <p className="text-[10px] uppercase tracking-widest text-blue-300 font-bold mt-1">
             Owner Portal

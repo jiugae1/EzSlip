@@ -10,7 +10,7 @@ export default function LandingPage() {
           <FileText className="text-white" size={48} />
         </div>
         <h1 className="text-5xl font-black text-gray-900 mb-4 tracking-tight">
-          PaySlip <span className="text-[#1e3a5f]">PH</span>
+          EzSlip
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mb-12">
           The professional digital payslip solution for businesses in the Philippines. 
@@ -64,7 +64,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-8 text-center text-gray-400 text-xs border-t border-gray-50">
-        &copy; 2026 PaySlip PH. Designed for Philippine Businesses.
+        &copy; 2026 EzSlip. Designed for Philippine Businesses.
       </footer>
     </div>
   )

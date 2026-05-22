@@ -5,10 +5,17 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+function generateOwnerEmail(businessName: string): string {
+  const slug = businessName
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[^a-z0-9]/g, '')
+  return `${slug}_owner@ezslip.internal`
+}
+
 export default function SignupPage() {
   const [businessName, setBusinessName] = useState('')
   const [ownerName, setOwnerName] = useState('')
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -31,21 +38,24 @@ export default function SignupPage() {
     }
 
     try {
+      const internalEmail = generateOwnerEmail(businessName)
+
       // 1. Sign up user
       const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
+        email: internalEmail,
+        password: password,
         options: {
           data: {
             role: 'owner',
             name: ownerName,
+            business_name: businessName,
           },
         },
       })
 
       if (authError) {
         if (authError.message.includes('already registered')) {
-          throw new Error('This email is already registered.')
+          throw new Error('This business is already registered.')
         }
         throw authError
       }
@@ -56,7 +66,7 @@ export default function SignupPage() {
           .from('companies')
           .insert({
             name: businessName,
-            owner_email: email,
+            owner_email: internalEmail,
             owner_auth_id: authData.user.id,
           })
           .select('company_code')
@@ -133,16 +143,6 @@ export default function SignupPage() {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-[#1e3a5f] focus:border-[#1e3a5f]"
             value={ownerName}
             onChange={(e) => setOwnerName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email Address</label>
-          <input
-            type="email"
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-[#1e3a5f] focus:border-[#1e3a5f]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>
